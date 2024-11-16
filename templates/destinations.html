@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">Nuestros Destinos</h1>
+    
+    <!-- Barra de búsqueda -->
+    <div class="row mb-4">
+        <div class="col-md-6 mx-auto">
+            <form action="{{ url_for('search') }}" method="GET" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="Buscar destinos...">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary filter-btn" data-filter="all">Todos</button>
+                <button type="button" class="btn btn-outline-primary filter-btn" data-filter="beach">Playas</button>
+                <button type="button" class="btn btn-outline-primary filter-btn" data-filter="city">Ciudades</button>
+                <button type="button" class="btn btn-outline-primary filter-btn" data-filter="mountain">Montañas</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de destinos -->
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="destinations-container">
+        {% for destination in destinations %}
+        <div class="col destination-card" data-category="{{ destination.category }}">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ destination[4] }}" class="card-img-top" alt="{{ destination[1] }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ destination[1] }}</h5>
+                    <p class="card-text">{{ destination[2] }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="price-tag">${{ destination[3] }}</span>
+                        <div class="btn-group">
+                            <a href="{{ url_for('destination_detail', id=destination[0]) }}" 
+                               class="btn btn-sm btn-outline-secondary">Ver detalles</a>
+                            <a href="{{ url_for('booking', destination_id=destination[0]) }}" 
+                               class="btn btn-sm btn-primary">Reservar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
